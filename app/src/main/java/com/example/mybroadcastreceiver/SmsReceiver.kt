@@ -15,6 +15,7 @@ class SmsReceiver : BroadcastReceiver() {
         private val TAG = SmsReceiver::class.java.simpleName
     }
 
+    // metode onReceive()receiver akan memproses metadata dari SMS yang masuk
     override fun onReceive(context: Context, intent: Intent) {
         val bundle = intent.extras
         try{
@@ -31,8 +32,9 @@ class SmsReceiver : BroadcastReceiver() {
 
                     Log.d(TAG,"senderNum: $senderNum; message: $message")
 
+                    // ReceiverActivity akan dijalankan dengan membawa data melalui sebuah intent showSmsIntent
                     val showSmsIntent = Intent(context, SmsReceiverActivity::class.java)
-                    showSmsIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    showSmsIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK // akan menjalankan Activity pada task yang berbeda. Bila Activity tersebut sudah ada di dalam stack, maka ia akan ditampilkan ke layar.
                     showSmsIntent.putExtra(SmsReceiverActivity.EXTRA_SMS_NO, senderNum)
                     showSmsIntent.putExtra(SmsReceiverActivity.EXTRA_SMS_MESSAGE, message)
                     context.startActivity(showSmsIntent)
@@ -44,6 +46,11 @@ class SmsReceiver : BroadcastReceiver() {
         }
     }
 
+    /*
+    kelas SmsManager dan SmsMesssage untuk melakukan pemrosesan SMS. Untuk memperoleh obyek dari
+    kelas SmsMessage, yaitu obyek currentMessage, kita menggunakan metode getIncomingMessage().
+    Metode ini akan mengembalikan currentMessage berdasarkan OS yang dijalankan oleh perangkat Android.
+     */
     private fun getIncomingMessage(aObject: Any, bundle: Bundle): SmsMessage {
         val currentSMS: SmsMessage
         val format = bundle.getString("format")
