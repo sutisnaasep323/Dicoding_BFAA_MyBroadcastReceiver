@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         private const val SMS_REQUEST_CODE = 101
+        const val ACTION_DOWNLOAD_STATUS = "download_status"
     }
 
     private var binding: ActivityMainBinding? = null
@@ -22,11 +23,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding?.root)
         
         binding?.btnPermission?.setOnClickListener(this)
+        binding?.btnDownload?.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        when{
-            v.id == R.id.btn_permission -> PermissionManager.check(this, Manifest.permission.RECEIVE_SMS, SMS_REQUEST_CODE)
+        when(v.id){
+            R.id.btn_permission -> PermissionManager.check(this, Manifest.permission.RECEIVE_SMS, SMS_REQUEST_CODE)
+            R.id.btn_download -> {
+
+            }
         }
     }
 
