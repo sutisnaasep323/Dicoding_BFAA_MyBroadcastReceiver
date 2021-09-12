@@ -15,13 +15,18 @@ import com.example.mybroadcastreceiver.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
+    /*
+    Kemudian MainActivity diregistrasikan untuk mendengar event/action dengan tag: ACTION_DOWNLOAD_STATUS.
+    Ketika event/action tersebut ditangkap oleh MainActivity, maka obyek downloadReceiver akan dijalankan
+     */
+
     companion object {
         private const val SMS_REQUEST_CODE = 101
         const val ACTION_DOWNLOAD_STATUS = "download_status"
     }
 
     private var binding: ActivityMainBinding? = null
-    private lateinit var downloadReceiver: BroadcastReceiver
+    private lateinit var downloadReceiver: BroadcastReceiver // kita membuat sebuah obyek dari DownloadReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +37,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding?.btnDownload?.setOnClickListener(this)
 
         downloadReceiver = object : BroadcastReceiver(){
+            /*
+            respon ketika kita mengirim broadcast dari class DownloadService
+             */
             override fun onReceive(context: Context?, intent: Intent?) {
                 Log.d(DownloadService.TAG, "Download Selesai")
             }
@@ -51,6 +59,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    /*
+     ketika Activity ingin dimatikan atau dihancurkan oleh sistem Android maka kita tidak boleh lupa untuk
+     melakukan proses pencopotan (unregister) obyek receiver yang telah diregistrasikan sebelumnya
+     */
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(downloadReceiver)

@@ -16,7 +16,11 @@ class DownloadService: JobIntentService() {
         return super.onStartCommand(intent, flags, startId)
     }
 
+    // Di sini kita akan menjalankan Intent Service yang akan melakukan proses mengunduh file secara Asynchronous di background
     override fun onHandleWork(intent: Intent) {
+        /*
+        DownloadService ini hanya melakukan proses sleep() selama 5 detik dan kemudian mem-broadcast sebuah IntentFilter dengan Action yang telah ditentukan, ACTION_DOWNLOAD_STATUS
+         */
         Log.d(TAG, "Download Service Dijalankan")
         try{
             Thread.sleep(5000)
@@ -26,6 +30,10 @@ class DownloadService: JobIntentService() {
 
         val notifyFinishIntent = Intent(MainActivity.ACTION_DOWNLOAD_STATUS)
         sendBroadcast(notifyFinishIntent)
+
+        /*
+        Ketika proses pengunduhan berkas tersebut selesai, service akan mem-broadcast sebuah event dan akan ada Activity yang merespon
+         */
     }
 
 
